@@ -2,9 +2,17 @@
 
 I started using R Shiny heavily in the summer of 2020. Since those memories are still fresh in my mind, I've prepared a few examples of what I consider the building blocks of Shiny.
 
-  * The convenient HTML tags
+  * The convenient HTML tags, if you need them
   * The pre-fabricated user interface elements
   * The reactive environment in the server
+
+Here has been my experience with these elements.
+
+  * __HTML__ I used this to make small tweaks to Shiny.
+  * __UI__ Building the Shiny interface was a breeze!
+  * __Reactivity__ My first attemps were clunky; I had to plan ahead.
+
+The examples below will give you the basics of these R Shiny elements.
 
 ## HTML
 
@@ -32,16 +40,20 @@ This R Shiny cheatsheet can help you find the inputs and layouts that are best f
 
 ## Reactivity
 
-### 004-dataframe
+### 004-ggplot
 
-[004-dataframe](/004-dataframe/app.R) is a simple example of how inputs are read by the server and outputs are served back to the user.
+[004-ggplot](/004-ggplot/app.R) is a simple example of how inputs are read by the server and outputs are served back to the user.
 
 The server is able to react to the input thanks to reactivity. Reactivity is a core feature in R Shiny that lets you quickly create dynamic variables.
 
-I was at first baffled by reactivity in R Shiny. I had not seen something like it in programming before. Eventually I started seeing it as just another abstraction.
+If you're like me, you'll find reactivity confusing at first. You can think of it as an abstraction. Instead of giving R a series of commands, you give R shiny a list of commands and let it decide what order and frequency to run them.
 
-### 005-dplyr
+### 005-datatable
 
-[005-dplyr](/005-dplyr/app.R) shows how ubiquitous reactivity can be in a Shiny app. One of the UI elements is dynamic, and the server keeps a few reactive values that it recalculates when needed. The app also shows how you have to use dplyr a bit differently in Shiny, especially if you're selecting variables dynamically.
+[005-datatable](/005-datatable/app.R) is a repeat of `004-ggplot` but with a datatable instead of ggplot.
+
+### 006-dplyr
+
+[006-dplyr](/006-dplyr/app.R) shows how ubiquitous reactivity can be in a Shiny app. One of the UI elements is dynamic, and the server keeps a few reactive values that it recalculates when needed. The app also shows how you have to use dplyr a bit differently in Shiny, especially if you're selecting variables dynamically.
 
 If you would like to visualize reactivity in action, be sure to check out reactlog: <https://rstudio.github.io/reactlog/>

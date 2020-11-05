@@ -1,4 +1,4 @@
-# 004-datatable
+# 005-datatable
 #
 # In Shiny, you have inputs and outputs. Inputs are defined in the UI and the
 # outputs in the server.
@@ -31,6 +31,7 @@ ui <- fluidPage(
         # Render an interactive table
         # The ui will look for the output$datatable variable in the server
         mainPanel(
+            uiOutput(outputId = "df_title"),
             dataTableOutput(outputId = "datatable")
         )
     )
@@ -38,6 +39,11 @@ ui <- fluidPage(
 
 # The server simply looks at the user input and returns the appropriate table.
 server <- function(input, output) {
+    # A simple dynamic title
+    # UI elements can be reactive
+    output$df_title <- renderUI(
+        h1(sprintf("%s dataset", input$df))
+    )
     
     # This is a "reactive value". It's a dynamic value that gets recalculated.
     #

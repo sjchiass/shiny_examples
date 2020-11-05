@@ -1,4 +1,4 @@
-# 005-dplyr
+# 006-dplyr
 #
 # Shiny inputs and outputs can be reactive, but reactive values can also be just
 # R objects. The Shiny server can have reactive vectors and dataframes that it
@@ -57,6 +57,33 @@ ui <- fluidPage(
 # The server is ready to recalculate values, ui elements, and tables.
 server <- function(input, output) {
     #
+    # Non-reactive values ------------------------------------------------------
+    #
+    # You are not forced to use reactivity in your Shiny server. Below is an
+    # example of a static function.
+    #
+    # Given the users's choice of a summarizing function, this will return
+    # the appropriate R function.
+    #
+    # You may be tempted to just use `get(name)` but a clever user could trick
+    # your app into using an arbitrary function.
+    summary_function <- function(name) {
+        if (name == "sum") {
+            sum
+        } else if (name == "mean") {
+            mean
+        } else if (name == "min") {
+            min
+        } else if (name == "max") {
+            max
+        } else if (name == "length") {
+            length
+        } else {
+            length
+        }
+    }
+    
+    #
     # Reactive values ----------------------------------------------------------
     #
     # This will select distinct values of `input$column_selection` and return
@@ -86,38 +113,19 @@ server <- function(input, output) {
         }
     )
     
-    # Given the users's choice of a summarization function, this will return
-    # the appropriate R function.
-    #
-    # You may be tempted to just use `get(input$summarize_function)` but a
-    # clever user could trick your app into using an arbitrary function.
-    summary_function <- reactive(
-        {
-            if (input$summarize_function == "sum") {
-                sum
-            } else if (input$summarize_function == "mean") {
-                mean
-            } else if (input$summarize_function == "min") {
-                min
-            } else if (input$summarize_function == "max") {
-                max
-            } else if (input$summarize_function == "length") {
-                length
-            } else {
-                length
-            }
-        }
-    )
-    
     # Given a column and a summary function, this reactive value will group
     # mtcars, summarize, and then ungroup it so that it can be displayed.
+    #
+    # Shiny is able to detect changes in input$summarize_function even if it's
+    # an argument for a function.
     summarized_data <- reactive(
         {
             req(filtered_data)
             
             filtered_data() %>%
                 group_by_at(input$column_selection) %>%
-                summarise_all(summary_function()) %>%
+                summarise_all(
+                    summary_function(input$summarize_function)) %>%
                 ungroup()
         }
     )
